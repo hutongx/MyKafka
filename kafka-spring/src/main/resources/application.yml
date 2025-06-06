@@ -1,0 +1,44 @@
+server:
+  port: 8181
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 5
+      enable-idempotence: true
+      compression-type: snappy
+      linger-ms: 20
+      batch-size: 65536
+      max-in-flight-requests-per-connection: 1
+      delivery-timeout-ms: 120000
+      request-timeout-ms: 30000
+
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP:orders-group}
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.example.kafka_demo.domain
+        enable.auto.commit: false
+        isolation.level: read_committed
+        auto.offset.reset: earliest
+        max.poll.records: 100
+        max.poll.interval.ms: 300000
+        session.timeout.ms: 15000
+        heartbeat.interval.ms: 3000
+
+    listener:
+      concurrency: 3
+      ack-mode: manual_immediate
+
+app:
+  kafka:
+    topics:
+      orders: test2
+    consumer:
+      dead-letter-topic: test2.DLT
