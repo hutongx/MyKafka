@@ -1,0 +1,145 @@
+spring:
+  application:
+    name: kafka-microservice
+
+  kafka:
+    bootstrap-servers: localhost:9092,localhost:9093,localhost:9094
+    
+    producer:
+      # Reliability settings
+      acks: all
+      retries: 2147483647
+      max-in-flight-requests-per-connection: 1
+      enable-idempotence: true
+
+      # Performance settings
+      batch-size: 16384
+      linger-ms: 5
+      buffer-memory: 33554432
+      compression-type: snappy
+
+      # Timeout settings
+      delivery-timeout-ms: 120000
+      request-timeout-ms: 30000
+
+      # Serialization
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+      properties:
+        max.block.ms: 10000
+        metadata.max.age.ms: 300000
+
+    consumer:
+      # Consumer Group
+      group-id: order-service-group
+
+      # Offset management
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+
+      # Performance settings
+      max-poll-records: 100
+      max-poll-interval-ms: 300000
+      session-timeout-ms: 30000
+      heartbeat-interval-ms: 3000
+      fetch-min-size: 1
+      fetch-max-wait: 500
+
+      # Serialization
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+
+      properties:
+        spring.json.trusted.packages: "com.example.kafka.model"
+        isolation.level: read_committed
+
+    listener:
+      # Concurrency and acknowledgment
+      concurrency: 3
+      ack-mode: manual_immediate
+
+      # Error handling
+      missing-topics-fatal: false
+
+      # Retry settings
+      retry:
+        topic:
+          enabled: true
+          attempts: 3
+          delay: 1000
+          multiplier: 2.0
+          max-delay: 10000
+
+      # Dead Letter Topic
+      dlt:
+        enabled: true
+
+    admin:
+      properties:
+        bootstrap.servers: ${spring.kafka.bootstrap-servers}
+
+    # Topic configurations
+    topics:
+      orders:
+        name: orders
+        partitions: 6
+        replication-factor: 3
+        retention-ms: 604800000  # 7 days
+        segment-ms: 86400000     # 1 day
+
+      order-events:
+        name: order-events
+        partitions: 3
+        replication-factor: 3
+        retention-ms: 2592000000  # 30 days
+
+      dead-letter:
+        name: order-dlt
+        partitions: 3
+        replication-factor: 3
+
+# Server configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+
+# Logging
+logging:
+  level:
+    org.apache.kafka: INFO
+    org.springframework.kafka: INFO
+    com.example.kafka: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+# Actuator endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: always
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+# Custom application properties
+app:
+  kafka:
+    monitoring:
+      enabled: true
+      metrics-interval: 30000
+
+    circuit-breaker:
+      enabled: true
+      failure-threshold: 5
+      recovery-timeout: 60000
+
+    retry:
+      max-attempts: 3
+      backoff-delay: 1000
