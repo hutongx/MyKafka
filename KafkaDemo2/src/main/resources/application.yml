@@ -1,0 +1,50 @@
+spring:
+  application:
+    name: KafkaDemo2
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      retries: 3
+      batch-size: 16384
+      linger-ms: 5
+      buffer-memory: 33554432
+      max-in-flight-requests-per-connection: 5
+      enable-idempotence: true
+      compression-type: snappy
+      properties:
+        max.request.size: 1048576
+        request.timeout.ms: 30000
+        delivery.timeout.ms: 120000
+
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: default-consumer-group
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      fetch-min-size: 1
+      fetch-max-wait: 500
+      max-poll-records: 500
+      session-timeout-ms: 30000
+      heartbeat-interval-ms: 10000
+      properties:
+        max.poll.interval.ms: 300000
+        isolation.level: read_committed
+
+    listener:
+      ack-mode: manual_immediate
+      concurrency: 3
+      poll-timeout: 3000
+      type: batch
+
+# Custom topic configurations
+kafka:
+  topics:
+    user-events: user-events-topic
+    order-events: order-events-topic
+  retry:
+    max-attempts: 3
+    backoff-delay: 1000

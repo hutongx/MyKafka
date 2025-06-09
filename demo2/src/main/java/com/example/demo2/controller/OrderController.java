@@ -1,7 +1,7 @@
 package com.example.demo2.controller;
 
 import com.example.demo2.domain.Order;
-import com.example.demo2.service.OrderProcessingService;
+//import com.example.demo2.service.OrderProcessingService;
 import com.example.demo2.service.OrderProducer;
 import com.example.demo2.utils.OrderRequest;
 //import com.example.demo2.utils.OrderSendCallback;
@@ -29,12 +29,16 @@ public class OrderController {
     private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 
     private final OrderProducer orderProducer;
-    private final OrderProcessingService orderProcessingService;
+//    private final OrderProcessingService orderProcessingService;
 
+//    @Autowired
+//    public OrderController(OrderProducer orderProducer, OrderProcessingService orderProcessingService) {
+//        this.orderProducer = orderProducer;
+//        this.orderProcessingService = orderProcessingService;
+//    }
     @Autowired
-    public OrderController(OrderProducer orderProducer, OrderProcessingService orderProcessingService) {
+    public OrderController(OrderProducer orderProducer) {
         this.orderProducer = orderProducer;
-        this.orderProcessingService = orderProcessingService;
     }
 
     /**
@@ -188,10 +192,10 @@ public class OrderController {
             metrics.put("timestamp", LocalDateTime.now());
 
             // Add processing service metrics if available
-            if (orderProcessingService != null) {
+//            if (orderProcessingService != null) {
 //                metrics.put("processedCount", orderProcessingService.getProcessedCount());
 //                metrics.put("errorCount", orderProcessingService.getErrorCount());
-            }
+//            }
 
             return ResponseEntity.ok(metrics);
 

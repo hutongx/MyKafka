@@ -4,9 +4,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
+//import org.hibernate.validator.constraints.Email;
+//import org.hibernate.validator.constraints.NotBlank;
+//import org.hibernate.validator.constraints.NotEmpty;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -22,20 +22,20 @@ public class Order implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @JsonProperty("orderId")
-    @NotBlank(message = "Order ID cannot be blank")
+//    @NotBlank(message = "Order ID cannot be blank")
     private String orderId;
 
     @JsonProperty("customerId")
-    @NotBlank(message = "Customer ID cannot be blank")
+//    @NotBlank(message = "Customer ID cannot be blank")
     private String customerId;
 
     @JsonProperty("customerEmail")
-    @Email(message = "Invalid email format")
-    @NotBlank(message = "Customer email cannot be blank")
+//    @Email(message = "Invalid email format")
+//    @NotBlank(message = "Customer email cannot be blank")
     private String customerEmail;
 
     @JsonProperty("items")
-    @NotEmpty(message = "Order must have at least one item")
+//    @NotEmpty(message = "Order must have at least one item")
     private List<OrderItem> items;
 
     @JsonProperty("totalAmount")
@@ -44,7 +44,7 @@ public class Order implements Serializable {
     private BigDecimal totalAmount;
 
     @JsonProperty("currency")
-    @NotBlank(message = "Currency cannot be blank")
+//    @NotBlank(message = "Currency cannot be blank")
     private String currency;
 
     @JsonProperty("status")
@@ -160,11 +160,11 @@ public class Order implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @JsonProperty("productId")
-        @NotBlank(message = "Product ID cannot be blank")
+//        @NotBlank(message = "Product ID cannot be blank")
         private String productId;
 
         @JsonProperty("productName")
-        @NotBlank(message = "Product name cannot be blank")
+//        @NotBlank(message = "Product name cannot be blank")
         private String productName;
 
         @JsonProperty("quantity")
@@ -221,23 +221,23 @@ public class Order implements Serializable {
         private static final long serialVersionUID = 1L;
 
         @JsonProperty("street")
-        @NotBlank(message = "Street cannot be blank")
+//        @NotBlank(message = "Street cannot be blank")
         private String street;
 
         @JsonProperty("city")
-        @NotBlank(message = "City cannot be blank")
+//        @NotBlank(message = "City cannot be blank")
         private String city;
 
         @JsonProperty("state")
-        @NotBlank(message = "State cannot be blank")
+//        @NotBlank(message = "State cannot be blank")
         private String state;
 
         @JsonProperty("zipCode")
-        @NotBlank(message = "ZIP code cannot be blank")
+//        @NotBlank(message = "ZIP code cannot be blank")
         private String zipCode;
 
         @JsonProperty("country")
-        @NotBlank(message = "Country cannot be blank")
+//        @NotBlank(message = "Country cannot be blank")
         private String country;
 
         // Default constructor

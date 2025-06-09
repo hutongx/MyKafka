@@ -3,9 +3,9 @@ package com.example.demo2.utils;
 import com.example.demo2.domain.Order;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import org.hibernate.validator.constraints.NotBlank;
-import org.hibernate.validator.constraints.NotEmpty;
-import org.jetbrains.annotations.NotNull;
+//import org.hibernate.validator.constraints.NotBlank;
+//import org.hibernate.validator.constraints.NotEmpty;
+//import org.jetbrains.annotations.NotNull;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,12 +13,12 @@ import java.util.List;
 @Data
 public class OrderRequest {
 
-    @NotBlank(message = "Customer ID is required")
+//    @NotBlank(message = "Customer ID is required")
 //    @Size(min = 3, max = 50, message = "Customer ID must be between 3 and 50 characters")
     @JsonProperty("customerId")
     private String customerId;
 
-    @NotEmpty(message = "Order must have at least one item")
+//    @NotEmpty(message = "Order must have at least one item")
 //    @Valid
     @JsonProperty("items")
     private List<Order.OrderItem> items;
