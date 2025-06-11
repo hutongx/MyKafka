@@ -11,6 +11,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ContainerProperties;
+import com.example.kafkademo3.KafkaErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 
 import java.util.HashMap;
@@ -122,7 +123,7 @@ public class KafkaConfig {
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
 
         // 错误处理
-        factory.setErrorHandler(new KafkaErrorHandler());
+        factory.setCommonErrorHandler(new KafkaErrorHandler());
 
         // 重试配置
         factory.setRetryTemplate(retryTemplate());
