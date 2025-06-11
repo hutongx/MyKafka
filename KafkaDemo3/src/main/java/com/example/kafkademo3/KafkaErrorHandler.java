@@ -23,6 +23,7 @@ public class KafkaErrorHandler extends DefaultErrorHandler {
         super(new FixedBackOff(1000L, 3L));
     }
 
+    /**
     @Override
     public void handleRemaining(Exception thrownException, List<ConsumerRecord<?, ?>> records,
                                 Consumer<?, ?> consumer, MessageListenerContainer container,
@@ -34,5 +35,16 @@ public class KafkaErrorHandler extends DefaultErrorHandler {
 
         // 调用父类实现以便遵循默认的失败处理策略
         super.handleRemaining(thrownException, records, consumer, container, batchListener);
+    }*/
+    @Override
+    public void handleRemaining(Exception thrownException, List<ConsumerRecord<?, ?>> records,
+                                Consumer<?, ?> consumer, MessageListenerContainer container) {
+        for (ConsumerRecord<?, ?> record : records) {
+            logger.error("Kafka listener error - Record: {}, Exception: {}",
+                    record, thrownException.getMessage(), thrownException);
+        }
+
+        // 调用父类实现以便遵循默认的失败处理策略
+        super.handleRemaining(thrownException, records, consumer, container);
     }
 }
