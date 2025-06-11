@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.listener.DefaultErrorHandler;
 import org.springframework.kafka.listener.MessageListenerContainer;
+import org.springframework.util.backoff.FixedBackOff;
 
 import org.springframework.stereotype.Component;
 import java.util.List;
@@ -17,6 +18,10 @@ import java.util.List;
 public class KafkaErrorHandler extends DefaultErrorHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(KafkaErrorHandler.class);
+
+    public KafkaErrorHandler() {
+        super(new FixedBackOff(1000L, 3L));
+    }
 
     @Override
     public void handleRemaining(Exception thrownException, List<ConsumerRecord<?, ?>> records,
