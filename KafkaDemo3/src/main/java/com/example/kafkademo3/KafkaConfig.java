@@ -11,6 +11,7 @@ import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.*;
 import org.springframework.kafka.listener.ContainerProperties;
+import com.example.kafkademo3.KafkaErrorHandler;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 
 import java.util.HashMap;
@@ -122,34 +123,8 @@ public class KafkaConfig {
         factory.getContainerProperties().setAckMode(ContainerProperties.AckMode.MANUAL_IMMEDIATE);
 
         // 错误处理
-        factory.setErrorHandler(new KafkaErrorHandler());
-
-        // 重试配置
-        factory.setRetryTemplate(retryTemplate());
+        factory.setCommonErrorHandler(new KafkaErrorHandler());
 
         return factory;
-    }
-
-    /**
-     * 重试模板配置
-     */
-    @Bean
-    public org.springframework.retry.support.RetryTemplate retryTemplate() {
-        org.springframework.retry.support.RetryTemplate retryTemplate =
-                new org.springframework.retry.support.RetryTemplate();
-
-        // 固定延迟重试策略
-        org.springframework.retry.policy.FixedBackOffPolicy backOffPolicy =
-                new org.springframework.retry.policy.FixedBackOffPolicy();
-        backOffPolicy.setBackOffPeriod(1000); // 1秒延迟
-        retryTemplate.setBackOffPolicy(backOffPolicy);
-
-        // 简单重试策略
-        org.springframework.retry.policy.SimpleRetryPolicy retryPolicy =
-                new org.springframework.retry.policy.SimpleRetryPolicy();
-        retryPolicy.setMaxAttempts(3); // 最多重试3次
-        retryTemplate.setRetryPolicy(retryPolicy);
-
-        return retryTemplate;
     }
 }
