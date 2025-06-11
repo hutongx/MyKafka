@@ -124,7 +124,7 @@ public class KafkaConfig {
 
         // 错误处理
         factory.setCommonErrorHandler(new KafkaErrorHandler());
-
+      
         return factory;
     }
 }
